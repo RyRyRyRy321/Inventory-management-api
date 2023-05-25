@@ -17,7 +17,6 @@ import jakarta.validation.constraints.NotNull;
 
 import com.spring_REST.customer.Customer;
 
-
     /**
      * Cart is an Entity class to represent in a relational database. Each customer has a single cart, and it can store multiple cartItem 
      */
@@ -43,40 +42,23 @@ public class Cart {
     @Enumerated(EnumType.STRING)
     private ShoppingCartStatus status;
 
-    @NotNull
     @CreationTimestamp
     private Date createdTimeStamp;
 
-    @NotNull
     @UpdateTimestamp
     private Date updatedTimeStamp;
-
-    /**
-     * Constructs an empty cart
-     */
-
-    public Cart() {
-
-    }
 
     /**
      * Constructs a cart with user-defined values
      * 
      * @param customer the entity class {@code com.spring_REST.customer}
      * @param status the status of the shopping cart
-     * @param createdTimeStamp the date and time when the object is created
-     * @param updatedTimeStamp the date and time when the object is modified
      */
 
-    public Cart(com.spring_REST.customer.Customer customer, ShoppingCartStatus status, Date createdTimeStamp,
-            Date updatedTimeStamp) {
+     public Cart(com.spring_REST.customer.Customer customer, @NotNull ShoppingCartStatus status) {
         Customer = customer;
         this.status = status;
-        this.createdTimeStamp = createdTimeStamp;
-        this.updatedTimeStamp = updatedTimeStamp;
     }
-
-
 
     /**
      * Returns the primary ID of the cart.
@@ -85,6 +67,8 @@ public class Cart {
     public Long getCartId() {
         return cartId;
     }
+
+
 
     /**
      * Sets the primary ID of the cart.

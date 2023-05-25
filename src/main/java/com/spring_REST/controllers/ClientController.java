@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -16,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring_REST.AddingCartServices;
 import com.spring_REST.cart.Cart;
 import com.spring_REST.cart.CartRepository;
+import com.spring_REST.cart.ShoppingCartStatus;
+import com.spring_REST.customer.Customer;
+import com.spring_REST.customer.CustomerRepository;
 import com.spring_REST.product.Product;
 import com.spring_REST.product.ProductRepository;
 
@@ -27,10 +32,11 @@ import jakarta.validation.Valid;
 @RequestMapping("/client")
 public class ClientController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
-
     private ProductRepository productRepository;
     private CartRepository cartRepository;
+
+    @Autowired
+    AddingCartServices addingCartServices;
 
     public ClientController(ProductRepository productRepository, CartRepository cartRepository) {
         this.productRepository = productRepository;
@@ -40,7 +46,6 @@ public class ClientController {
     @GetMapping("product")
     public Iterable<Product> getProduct(){
 
-        logger.info("All products are fetch in the repository");
 
         return productRepository.findAll();
     }
@@ -48,7 +53,6 @@ public class ClientController {
     @GetMapping("product/{id}")
     public Product getSpecificProduct(@PathVariable Long id){
 
-        logger.info("A specific product is fetch in the repository");
 
 
         return productRepository.findById(id).get();
@@ -56,36 +60,49 @@ public class ClientController {
 
     @PostMapping("product")
     public ResponseEntity<Map<String,String>> newProduct(@Valid @RequestBody Product product, BindingResult bindingResult){
-        
+
         if (bindingResult.hasErrors()){
             Map<String, String> errors = new HashMap<>();
-
+    
             for(FieldError error : bindingResult.getFieldErrors()) {
                 errors.put(error.getField(), error.getDefaultMessage());
             }
-
-            logger.error("Invalid creation of Product due to validation errors");
-
+    
             return ResponseEntity.badRequest().body(errors);
         }
-        
+
+
         productRepository.save(product);
+        System.out.println("Product created");
 
-        logger.info("Successfully created a product");
-
-        
         return ResponseEntity.ok(null);
     }
-
-    @GetMapping("cart")
-    public Iterable<Cart> getCart(){
-        return cartRepository.findAll();
-    }
-
 
     @GetMapping("cart/{id}")
     public Cart getSpecificCart(@PathVariable Long id){
         return cartRepository.findById(id).get();
+    }
+
+
+    @PostMapping("customer")
+    public ResponseEntity<Map<String,String>> addCustomer(@Valid @RequestBody Customer customer, BindingResult result){
+        
+        @Valid Cart cart = new Cart(customer, ShoppingCartStatus.ACTIVE);
+
+        if (result.hasErrors()){
+            Map<String, String> errors = new HashMap<>();
+    
+            for(FieldError error : result.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+    
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+
+        addingCartServices.addCustomer(customer, cart);
+
+        return ResponseEntity.ok(null);
     }
 
 }
