@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -78,6 +80,54 @@ public class ClientController {
         return ResponseEntity.ok(null);
     }
 
+    @PutMapping("product/{id}")
+    public ResponseEntity<Map<String,String>> updateProduct(@PathVariable(value = "id") String productId, @Valid @RequestBody Product product, BindingResult bindingResult){
+
+        if (bindingResult.hasErrors()){
+            Map<String, String> errors = new HashMap<>();
+    
+            for(FieldError error : bindingResult.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+    
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        Long updateProductId = Long.parseLong(productId);
+
+        Product foundProduct = productRepository.findById(updateProductId).get();
+
+        // productName
+        // category
+        // productDesc
+        // stockAlertQuantity
+        // unitPrice
+        // discount
+        // quantity
+        // productPrice
+
+        foundProduct.setProductName(product.getProductName());
+        foundProduct.setCategory(product.getCategory());
+        foundProduct.setProductDesc(product.getProductDesc());
+        foundProduct.setStockAlertQuantity(product.getStockAlertQuantity());
+        foundProduct.setUnitPrice(product.getUnitPrice());
+        foundProduct.setDiscount(product.getDiscount());
+        foundProduct.setQuantity(product.getQuantity());
+        foundProduct.setProductPrice(product.getProductPrice());
+
+
+        productRepository.save(foundProduct);
+        System.out.println("Product updated");
+
+        return ResponseEntity.ok(null);
+    }
+
+    @DeleteMapping("product/{id}")
+    public void deleteProduct(@PathVariable(value = "id") String productId){
+        productRepository.deleteById(Long.parseLong(productId));
+        System.out.println("Product deleted");
+    }
+    
     @GetMapping("cart/{id}")
     public Cart getSpecificCart(@PathVariable Long id){
         return cartRepository.findById(id).get();
