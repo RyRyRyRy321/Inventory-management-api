@@ -25,6 +25,7 @@ public class Product {
     private Long productId;
 
     @NotBlank
+    @Size(min = 8, max = 20)
     private String productName;
 
     @NotNull
@@ -46,7 +47,7 @@ public class Product {
 
     @NotNull
     @PositiveOrZero
-    @Digits(integer = 0, fraction = 2)
+    @Digits(integer = 0, fraction = 2, message = "Discount factor must lie between 0 to 1")
     private BigDecimal discount;
 
     @NotNull

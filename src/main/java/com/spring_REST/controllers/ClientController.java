@@ -137,7 +137,7 @@ public class ClientController {
     @PostMapping("customer")
     public ResponseEntity<Map<String,String>> addCustomer(@Valid @RequestBody Customer customer, BindingResult result){
         
-        @Valid Cart cart = new Cart(customer, ShoppingCartStatus.ACTIVE);
+        // @Valid Cart cart = new Cart(customer, ShoppingCartStatus.ACTIVE);
 
         if (result.hasErrors()){
             Map<String, String> errors = new HashMap<>();
@@ -150,7 +150,7 @@ public class ClientController {
         }
 
 
-        addingCartServices.addCustomer(customer, cart);
+        // addingCartServices.addCustomer(customer, cart);
 
         return ResponseEntity.ok(null);
     }

@@ -55,9 +55,12 @@ public class Cart {
      * @param status the status of the shopping cart
      */
 
-     public Cart(com.spring_REST.customer.Customer customer, @NotNull ShoppingCartStatus status) {
-        Customer = customer;
-        this.status = status;
+    public Cart(com.spring_REST.customer.Customer customer, @NotNull ShoppingCartStatus status,
+                Date createdTimeStamp, Date updatedTimeStamp) {
+            Customer = customer;
+            this.status = status;
+            this.createdTimeStamp = createdTimeStamp;
+            this.updatedTimeStamp = updatedTimeStamp;
     }
 
     /**
@@ -67,8 +70,6 @@ public class Cart {
     public Long getCartId() {
         return cartId;
     }
-
-
 
     /**
      * Sets the primary ID of the cart.
