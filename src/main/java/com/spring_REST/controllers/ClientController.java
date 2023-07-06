@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring_REST.AddingCartServices;
 import com.spring_REST.cart.Cart;
 import com.spring_REST.cart.CartRepository;
 import com.spring_REST.cart.ShoppingCartStatus;
@@ -36,9 +34,6 @@ public class ClientController {
 
     private ProductRepository productRepository;
     private CartRepository cartRepository;
-
-    @Autowired
-    AddingCartServices addingCartServices;
 
     public ClientController(ProductRepository productRepository, CartRepository cartRepository) {
         this.productRepository = productRepository;
