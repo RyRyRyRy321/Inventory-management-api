@@ -48,15 +48,13 @@ public class ClientController {
     }
 
     @GetMapping("product/{id}")
-    public Product getSpecificProduct(@PathVariable Long id){
-
-
-
-        return productRepository.findById(id).get();
+    public Product getSpecificProduct(@PathVariable String id){
+        Long productId = Long.parseLong(id);
+        return productRepository.findById(productId).get();
     }
 
     @PostMapping("product")
-    public ResponseEntity<Map<String,String>> newProduct(@Valid @RequestBody Product product, BindingResult bindingResult){
+    public Iterable<Product> newProduct(@Valid @RequestBody Product product, BindingResult bindingResult){
 
         if (bindingResult.hasErrors()){
             Map<String, String> errors = new HashMap<>();
@@ -65,14 +63,14 @@ public class ClientController {
                 errors.put(error.getField(), error.getDefaultMessage());
             }
     
-            return ResponseEntity.badRequest().body(errors);
+            return null;
         }
 
 
         productRepository.save(product);
         System.out.println("Product created");
 
-        return ResponseEntity.ok(null);
+        return productRepository.findAll();
     }
 
     @PutMapping("product/{id}")
