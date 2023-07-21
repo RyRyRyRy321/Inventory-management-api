@@ -35,6 +35,8 @@ public class ClientController {
     private ProductRepository productRepository;
     private CartRepository cartRepository;
 
+    private Logger logger = LoggerFactory.getLogger(ClientController.class);
+
     public ClientController(ProductRepository productRepository, CartRepository cartRepository) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
@@ -68,7 +70,7 @@ public class ClientController {
 
 
         productRepository.save(product);
-        System.out.println("Product created");
+        logger.info("A Product is created");
 
         return productRepository.findAll();
     }
@@ -110,7 +112,8 @@ public class ClientController {
 
 
         productRepository.save(foundProduct);
-        System.out.println("Product updated");
+        logger.info("A Product is updated");
+
 
         return ResponseEntity.ok(null);
     }
@@ -118,7 +121,8 @@ public class ClientController {
     @DeleteMapping("product/{id}")
     public void deleteProduct(@PathVariable(value = "id") String productId){
         productRepository.deleteById(Long.parseLong(productId));
-        System.out.println("Product deleted");
+        logger.info("A Product is deleted");
+
     }
     
     @GetMapping("cart/{id}")
