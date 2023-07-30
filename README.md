@@ -23,7 +23,7 @@ The frontend application is built using the following frameworks:
 * Server-side Form Validation - Ensures incoming product data is thoroughly examined and validated on the server before processing.
 
 
-!!! warning "Caution"
+[!IMPORTANT]
 
 The application will not launch if the values of database is not supplied the following environment variables are ${JAVA_DATABASE_URL}, ${JAVA_DATABASE_USERNAME}, and ${JAVA_DATABASE_PASSWORD} (Assuming the user uses a password).
 
