@@ -32,18 +32,14 @@ The application will not launch if the values of database is not supplied the fo
 1. Clone the repository:
 
 ```
-
 git clone <repository-url>
-
 ```
 
 
 2. Navigate to the project directory:
 
 ```
-
 cd <project-directory>
-
 ```
 
 
@@ -51,7 +47,6 @@ cd <project-directory>
 
 ```
 ./mvnw install
-
 ```
 
 
@@ -59,7 +54,6 @@ cd <project-directory>
 
 ```
 ./mvnw spring-boot:run
-
 ```
 
 
